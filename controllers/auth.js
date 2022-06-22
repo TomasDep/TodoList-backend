@@ -1,11 +1,11 @@
 const { response } = require('express');
 const bcrypt = require('bcryptjs')
 
-const User = require('../models/users');
-const generarJWT = require('../helpers/jwt');
+const User = require('../models/user');
+const { generarJWT } = require('../helpers/jwt');
 
 /**
- * Metodo para hacer el Login
+ * Metodo para el inicio de sesion
  */
 const login = async (req, res = response) => {
   const { username, password } = req.body;

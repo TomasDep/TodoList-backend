@@ -1,12 +1,15 @@
 const bcrypt = require('bcryptjs')
 
-const User = require('../models/usuario');
-const generarJWT = require('../helpers/jwt');
+const User = require('../models/user');
+const { generarJWT } = require('../helpers/jwt');
 
 /**
  * Metodo para obtener todos los usuarios
  */
 const getUsers = async (req, res) => {
+  /**
+   * Crear una lista de todos los usuarios registrados
+   */
   const users = await User.find();
 
   res.json({
@@ -16,13 +19,17 @@ const getUsers = async (req, res) => {
   });
 }
 
+/**
+ * 
+ * Metodo para registrar un usuario
+ */
 const registerUser = async (req, res = response) => {
   const { username, password } = req.body;
 
   try {
-    const existEmail = await User.findOne({ username });
+    const existUsername = await User.findOne({ username });
 
-    if (existEmail) {
+    if (existUsername) {
       return res.status(400).json({
         ok: false,
         message: 'El nombre de usuario ya se encuentra registrado'
@@ -31,21 +38,27 @@ const registerUser = async (req, res = response) => {
 
     const user = new User(req.body);
 
-    // Encriptar contraseña
+    /**
+     * Encriptar la contraseña
+     */
     const salt = bcrypt.genSaltSync();
     user.password = bcrypt.hashSync(password, salt);
 
-    // Guardar usuario
+    /**
+     * Guardar el usuario en la Base de datos
+     */
     await user.save();
 
-    // Generar JWT
+    /**
+     * Generar el JWT
+     */
     const token = await generarJWT(user.id);
-    
+
     res.json({
       ok: true,
       message: 'Usuario registrado correctamente',
       token,
-      usuario
+      user
     });
   } catch (error) {
     console.log(error);
