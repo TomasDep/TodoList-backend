@@ -7,7 +7,6 @@ const TaskSchema = Schema({
   }, 
   state: {
     type: Boolean,
-    require: true,
     default: false
   },
   description: {
@@ -22,7 +21,7 @@ const TaskSchema = Schema({
 }, { collection: 'tasks' });
 
 TaskSchema.method('toJSON', function() {
-  const { __v, _id, ...object } = this.toObject;
+  const { __v, _id, ...object } = this.toObject();
   object.uid = _id;
   return object;
 });
