@@ -2,7 +2,7 @@ const { response } = require('express');
 const bcrypt = require('bcryptjs')
 
 const User = require('../models/user');
-const { generarJWT } = require('../helpers/jwt');
+const { generateJWT } = require('../helpers/jwt');
 
 /**
  * Metodo para el inicio de sesion
@@ -36,7 +36,7 @@ const login = async (req, res = response) => {
     /**
      * Generar el JWT 
      */ 
-    const token = await generarJWT(user.id);
+    const token = await generateJWT(user.id);
 
     res.json({
       ok: true,
@@ -52,6 +52,27 @@ const login = async (req, res = response) => {
   }
 }
 
+/**
+ * Metodo para verificar y renovar token
+ */
+const renewToken = async (req, res = response) => {
+  const uid = req.uid;
+  
+  /**
+    * Generar el JWT 
+    */ 
+  const token = await generateJWT(uid);
+  const user = await User.findById(uid);
+
+  res.json({
+    ok: true,
+    message: 'El token ha sido renovado',
+    token,
+    user,
+  });
+}
+
 module.exports = {
-  login
+  login,
+  renewToken
 }

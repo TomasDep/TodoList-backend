@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs')
 
 const User = require('../models/user');
-const { generarJWT } = require('../helpers/jwt');
+const { generateJWT } = require('../helpers/jwt');
 
 /**
  * Metodo para obtener todos los usuarios
@@ -52,7 +52,7 @@ const registerUser = async (req, res = response) => {
     /**
      * Generar el JWT
      */
-    const token = await generarJWT(user.id);
+    const token = await generateJWT(user.id);
 
     res.json({
       ok: true,

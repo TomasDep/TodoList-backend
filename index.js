@@ -15,6 +15,7 @@ dbConnection();
  * Rutas
  */
 app.use('/api/login', require('./routes/auth'));
+app.use('/api/renew', require('./routes/renew'));
 app.use('/api/users', require('./routes/users'));
 app.use('/api/tasks', require('./routes/tasks'));
 

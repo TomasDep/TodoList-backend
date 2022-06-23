@@ -18,7 +18,11 @@ const TaskSchema = Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   }
-}, { collection: 'tasks' });
+}, { 
+  timestamps: { createdAt: 'created_at' } 
+}, { 
+  collection: 'tasks' 
+});
 
 TaskSchema.method('toJSON', function() {
   const { __v, _id, ...object } = this.toObject();

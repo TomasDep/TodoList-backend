@@ -1,5 +1,4 @@
 const { response } = require('express');
-const { model } = require('mongoose');
 
 const Task = require('../models/task');
 
@@ -7,15 +6,21 @@ const Task = require('../models/task');
  * Metodo para obtener todas las tareas
  */
 const getTasks = async (req, res = response) => {
+  const page = Number(req.query.page) || 0;
+  const uid = req.uid;
   /**
    * Crear una lista de todas las tareas registradas
    */
-   const tasks = await Task.find();
+  const [ tasks, total ] = await Promise.all([
+    Task.find({ user: uid }).skip(page).limit(5).sort({ 'created_at': -1 }),
+    Task.count()
+  ]);
 
    res.json({
      ok: true,
      message: 'Lista de tareas',
      tasks,
+     total
    });
 }
 
