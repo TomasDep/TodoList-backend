@@ -19,6 +19,6 @@ app.use('/api/renew', require('./routes/renew'));
 app.use('/api/users', require('./routes/users'));
 app.use('/api/tasks', require('./routes/tasks'));
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 5000, () => {
   console.log('Servidor corriendo en el puerto ' + process.env.PORT);
 });
